@@ -1,0 +1,81 @@
+<ArrayOfCraftData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CraftData>
+		<Key>ReikaKalseki.ItemMagnet</Key>
+		<Category>upgrades</Category>
+		<Tier>1</Tier>
+		<CraftedKey>ReikaKalseki.ItemMagnet</CraftedKey>
+		<CraftedAmount>1</CraftedAmount>
+		<Costs>
+			<CraftCost>
+				<Key>IronGear</Key>
+				<Amount>30</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>SpiderBotPowerCore</Key>
+				<Amount>30</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>LightweightMachineHousing</Key>
+				<Amount>10</Amount>
+			</CraftCost>
+		</Costs>
+		<Description>Greatly increases your item collection range.</Description>
+		<Hint>Suit item! You only need one! Does not stack!</Hint>
+		<CanCraftAnywhere>false</CanCraftAnywhere>
+		<ResearchCost>5</ResearchCost>
+	</CraftData>
+	<CraftData>
+		<Key>ReikaKalseki.NightVision</Key>
+		<Category>upgrades</Category>
+		<Tier>1</Tier>
+		<CraftedKey>ReikaKalseki.NightVision</CraftedKey>
+		<CraftedAmount>1</CraftedAmount>
+		<Costs>
+			<CraftCost>
+				<Key>BasicPCB</Key>
+				<Amount>20</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>SpiderBotPowerCore</Key>
+				<Amount>10</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>LightweightMachineHousing</Key>
+				<Amount>5</Amount>
+			</CraftCost>
+		</Costs>
+		<Description>No more pitch darkness in caves!</Description>
+		<Hint>Suit item! You only need one! Does not stack!</Hint>
+		<CanCraftAnywhere>false</CanCraftAnywhere>
+		<ResearchCost>5</ResearchCost>
+	</CraftData>
+	<CraftData>
+		<Key>ReikaKalseki.SpringBoots</Key>
+		<Category>upgrades</Category>
+		<Tier>1</Tier>
+		<CraftedKey>ReikaKalseki.SpringBoots</CraftedKey>
+		<CraftedAmount>1</CraftedAmount>
+		<Costs>
+			<CraftCost>
+				<Key>IronGear</Key>
+				<Amount>25</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>ServoMotor</Key>
+				<Amount>30</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>TitaniumHousing</Key>
+				<Amount>10</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>SecondaryUpgradeModule</Key>
+				<Amount>2</Amount>
+			</CraftCost>
+		</Costs>
+		<Description>Markedly reduces fall damage, and will save your life after a particularly long fall, provided you are at full health.</Description>
+		<Hint>Suit item! You only need one! Does not stack!</Hint>
+		<CanCraftAnywhere>false</CanCraftAnywhere>
+		<ResearchCost>10</ResearchCost>
+	</CraftData>
+</ArrayOfCraftData>	

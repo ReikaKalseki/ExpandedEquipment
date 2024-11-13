@@ -1,0 +1,51 @@
+<ArrayOfItemEntry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	  <ItemEntry>
+		<Key>ReikaKalseki.ItemMagnet</Key>
+		<Name>Item Magnet</Name>
+		<Plural>Item Magnets</Plural>
+		<Type>ItemSingle</Type>
+		<Object>UnknownItem</Object><!-- Obviously placeholder :D we display this when it's dropped -->
+		<Sprite>ReikaKalseki.ItemMagnet</Sprite>
+		<!-- Atlas optional -->
+		<Category>SuitUpgrade</Category>
+		<ResearchRequirements>
+			<Research>suit upgrades</Research>
+		</ResearchRequirements>
+    <ScanRequirements>
+      <Scan>LithiumOre</Scan>
+    </ScanRequirements>
+	  </ItemEntry>
+	  <ItemEntry>
+		<Key>ReikaKalseki.NightVision</Key>
+		<Name>Night Vision Module</Name>
+		<Plural>Night Vision Modules</Plural>
+		<Type>ItemSingle</Type>
+		<Object>UnknownItem</Object><!-- Obviously placeholder :D we display this when it's dropped -->
+		<Sprite>ReikaKalseki.NightVision</Sprite>
+		<!-- Atlas optional -->
+		<Category>SuitUpgrade</Category>
+		<ResearchRequirements>
+			<Research>suit upgrades</Research>
+		</ResearchRequirements>
+    <ScanRequirements>
+      <Scan>LithiumOre</Scan>
+    </ScanRequirements>
+	  </ItemEntry>
+	  <ItemEntry>
+		<Key>ReikaKalseki.SpringBoots</Key>
+		<Name>Spring-Loaded Boots</Name>
+		<Plural>Spring-Loaded Boots</Plural>
+		<Type>ItemSingle</Type>
+		<Object>UnknownItem</Object><!-- Obviously placeholder :D we display this when it's dropped -->
+		<Sprite>ReikaKalseki.SpringBoots</Sprite>
+		<!-- Atlas optional -->
+		<Category>SuitUpgrade</Category>
+		<ResearchRequirements>
+			<Research>suit upgrades</Research>
+		</ResearchRequirements>
+    <ScanRequirements>
+      <Scan>TitaniumOre</Scan>
+      <Scan>NickelOre</Scan>
+    </ScanRequirements>
+	  </ItemEntry>
+</ArrayOfItemEntry>
