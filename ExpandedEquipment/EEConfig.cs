@@ -12,6 +12,7 @@ namespace ReikaKalseki.ExpandedEquipment
 	{		
 		public enum ConfigEntries {
 			[ConfigEntry("Item Magnet Power Cost", typeof(float), 0.1F, 0, 10, 0)]MAGNET_COST,
+			[ConfigEntry("Turbo Item Magnet Power Cost", typeof(float), 0.4F, 0, 100, 0)]MAGNET_V2_COST,
 			[ConfigEntry("Night Vision Power Cost", typeof(float), 0.4F, 0, 10, 0)]NV_COST,
 			[ConfigEntry("Night Vision Lighting Strength", typeof(float), 0.3F, 0, 1, 0)]NV_STRENGTH,
 			[ConfigEntry("Spring Boots Damage Reduction Power Cost (Minimum)", typeof(float), 16, 0, 512, 0)]FALL_BOOT_COST_MIN,

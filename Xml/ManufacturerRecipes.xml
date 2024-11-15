@@ -25,6 +25,35 @@
 		<ResearchCost>5</ResearchCost>
 	</CraftData>
 	<CraftData>
+		<Key>ReikaKalseki.ItemMagnetV2</Key>
+		<Category>upgrades</Category>
+		<Tier>4</Tier>
+		<CraftedKey>ReikaKalseki.ItemMagnetV2</CraftedKey>
+		<CraftedAmount>1</CraftedAmount>
+		<Costs>
+			<CraftCost>
+				<Key>ReikaKalseki.ItemMagnet</Key>
+				<Amount>1</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>UltimatePCB</Key>
+				<Amount>2</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>OverclockedCrystalClock</Key>
+				<Amount>100</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>PlasticPellet</Key>
+				<Amount>50</Amount>
+			</CraftCost>
+		</Costs>
+		<Description>Enormously increases your item collection range.</Description>
+		<Hint>Suit item! You only need one! Does not stack, even with T1 magnet!</Hint>
+		<CanCraftAnywhere>false</CanCraftAnywhere>
+		<ResearchCost>10</ResearchCost>
+	</CraftData>
+	<CraftData>
 		<Key>ReikaKalseki.NightVision</Key>
 		<Category>upgrades</Category>
 		<Tier>1</Tier>

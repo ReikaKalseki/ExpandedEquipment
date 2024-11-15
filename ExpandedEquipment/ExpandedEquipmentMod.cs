@@ -43,10 +43,18 @@ namespace ReikaKalseki.ExpandedEquipment
     public static DroppedItemData doPlayerItemCollection(ItemManager mgr, long x, long y, long z, Vector3 off, float magRange, float magStrength, float range, int maxStack, Player p) {
     	PlayerInventory inv = p.mInventory;
     	int id = ItemEntry.GetIDFromKey("ReikaKalseki.ItemMagnet", true);
+    	int id2 = ItemEntry.GetIDFromKey("ReikaKalseki.ItemMagnetV2", true);
     	//FUtil.log("Has magnet "+id+" : "+inv.GetSuitAndInventoryItemCount(id));
     	float pwr = config.getFloat(EEConfig.ConfigEntries.MAGNET_COST);
     	float pt = pwr*Time.deltaTime;
-		if (SurvivalPowerPanel.mrSuitPower >= pt && id > 0 && inv.GetSuitAndInventoryItemCount(id) > 0) { //TODO cache this for performance
+    	float pwr2 = config.getFloat(EEConfig.ConfigEntries.MAGNET_V2_COST);
+    	float pt2 = pwr2*Time.deltaTime;
+		if (SurvivalPowerPanel.mrSuitPower >= pt2 && id2 > 0 && inv.GetSuitAndInventoryItemCount(id2) > 0) { //TODO cache this for performance
+    		range *= 16;
+    		magRange *= 16;
+    		SurvivalPowerPanel.mrSuitPower -= pt2;
+		}
+		else if (SurvivalPowerPanel.mrSuitPower >= pt && id > 0 && inv.GetSuitAndInventoryItemCount(id) > 0) { //TODO cache this for performance
     		range *= 6;
     		magRange *= 6;
     		SurvivalPowerPanel.mrSuitPower -= pt;

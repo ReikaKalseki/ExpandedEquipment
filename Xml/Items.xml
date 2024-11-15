@@ -16,6 +16,29 @@
     </ScanRequirements>
 	  </ItemEntry>
 	  <ItemEntry>
+		<Key>ReikaKalseki.ItemMagnetV2</Key>
+		<Name>Turbocharged Item Magnet</Name>
+		<Plural>Turbocharged Item Magnets</Plural>
+		<Type>ItemSingle</Type>
+		<Object>UnknownItem</Object><!-- Obviously placeholder :D we display this when it's dropped -->
+		<Sprite>ReikaKalseki.ItemMagnetV2</Sprite>
+		<!-- Atlas optional -->
+		<Category>SuitUpgrade</Category>
+		<ResearchRequirements>
+			<Research>advancedcrystal</Research>
+			<Research>biomass</Research>
+			<Research>alloys</Research>
+			<Research>T5 assist machines</Research>
+		</ResearchRequirements>
+    <ScanRequirements>
+      <Scan>TitaniumOre</Scan>
+      <Scan>GoldOre</Scan>
+      <Scan>NickelOre</Scan>
+      <Scan>CrystalDeposit</Scan>
+      <Scan>BiomassGrowth</Scan>
+    </ScanRequirements>
+	  </ItemEntry>
+	  <ItemEntry>
 		<Key>ReikaKalseki.NightVision</Key>
 		<Name>Night Vision Module</Name>
 		<Plural>Night Vision Modules</Plural>
