@@ -27,7 +27,7 @@
 		<ResearchRequirements>
 			<Research>advancedcrystal</Research>
 			<Research>biomass</Research>
-			<Research>alloys</Research>
+			<Research>Alloys</Research>
 			<Research>T5 assist machines</Research>
 		</ResearchRequirements>
     <ScanRequirements>
@@ -69,6 +69,23 @@
     <ScanRequirements>
       <Scan>TitaniumOre</Scan>
       <Scan>NickelOre</Scan>
+    </ScanRequirements>
+	  </ItemEntry>
+	  <ItemEntry>
+		<Key>ReikaKalseki.SandBlaster</Key>
+		<Name>Sand Blaster</Name>
+		<Plural>Sand Blasters</Plural>
+		<Type>ItemSingle</Type>
+		<Object>UnknownItem</Object><!-- Obviously placeholder :D we display this when it's dropped -->
+		<Sprite>ReikaKalseki.SandBlaster</Sprite>
+		<!-- Atlas optional -->
+		<Category>SuitUpgrade</Category>
+		<ResearchRequirements>
+			<Research>suit upgrades</Research>
+		</ResearchRequirements>
+    <ScanRequirements>
+      <Scan>LithiumOre</Scan>
+      <Scan>IronOre</Scan>
     </ScanRequirements>
 	  </ItemEntry>
 </ArrayOfItemEntry>

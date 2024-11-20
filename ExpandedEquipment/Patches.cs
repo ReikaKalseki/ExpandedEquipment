@@ -48,7 +48,39 @@ namespace ReikaKalseki.ExpandedEquipment {
 			return codes.AsEnumerable();
 		}
 	}
-	
+/*
+	[HarmonyPatch(typeof(ItemManager))]
+	[HarmonyPatch("UpdateCollection")]
+	public static class PlayerCollectiorItemScanRange {
+		
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			try {
+				FileLog.Log("Running patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				OpCode[] pattern1 = new OpCode[]{OpCodes.Ldc_I4_M1, OpCodes.Stloc_S, OpCodes.Br};
+				OpCode[] pattern2 = new OpCode[]{OpCodes.Ldloc_S, OpCodes.Ldc_I4_1, OpCodes.Add, OpCodes.Stloc_S, OpCodes.Ldloc_S, OpCodes.Ldc_I4_1, OpCodes.Ble};
+				for (int i = 0; i < codes.Count; i++) {
+					if (InstructionHandlers.matchPattern(codes, i, pattern1)) {
+						FileLog.Log("Replacing i4_M1 with i4_-3 in for loop @ "+i);
+						codes[i] = new CodeInstruction(OpCodes.Ldc_I4, -3);
+					}
+					else if (InstructionHandlers.matchPattern(codes, i, pattern2)) {
+						FileLog.Log("Replacing i4_1 with i4_3 in for loop @ "+i);
+						codes[i+5].opcode = OpCodes.Ldc_I4_3;
+					}
+				}
+				FileLog.Log("Done patch "+MethodBase.GetCurrentMethod().DeclaringType);
+			}
+			catch (Exception e) {
+				FileLog.Log("Caught exception when running patch "+MethodBase.GetCurrentMethod().DeclaringType+"!");
+				FileLog.Log(e.Message);
+				FileLog.Log(e.StackTrace);
+				FileLog.Log(e.ToString());
+			}
+			return codes.AsEnumerable();
+		}
+	}
+*/	
 	[HarmonyPatch(typeof(SurvivalFogManager))]
 	[HarmonyPatch("Update")]
 	public static class SurvivalFogHook {
@@ -91,6 +123,35 @@ namespace ReikaKalseki.ExpandedEquipment {
 				
 				idx = InstructionHandlers.getLastOpcodeBefore(codes, idx, OpCodes.Stloc_S);
 				codes.Insert(idx, InstructionHandlers.createMethodCall(typeof(ExpandedEquipmentMod), "getFallDamage", false, new Type[]{typeof(int)}));
+				
+				FileLog.Log("Done patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				//FileLog.Log("Codes are "+InstructionHandlers.toString(codes));
+			}
+			catch (Exception e) {
+				FileLog.Log("Caught exception when running patch "+MethodBase.GetCurrentMethod().DeclaringType+"!");
+				FileLog.Log(e.Message);
+				FileLog.Log(e.StackTrace);
+				FileLog.Log(e.ToString());
+			}
+			return codes.AsEnumerable();
+		}
+	}
+
+	[HarmonyPatch(typeof(SurvivalDigScript))]
+	[HarmonyPatch("DoNonOreDig")]
+	public static class SandDigHook {
+		
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			try {
+				FileLog.Log("Running patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				int idx = InstructionHandlers.getInstruction(codes, 0, 0, OpCodes.Callvirt, typeof(PlayerBuilder), "Dig", true, new Type[]{typeof(Segment), typeof(long), typeof(long), typeof(long)});
+				codes[idx] = InstructionHandlers.createMethodCall(typeof(ExpandedEquipmentMod), "onDoNonOreDig", false, new Type[]{typeof(PlayerBuilder), typeof(Segment), typeof(long), typeof(long), typeof(long), typeof(SurvivalDigScript), typeof(ushort)});
+				codes.InsertRange(idx, new List<CodeInstruction>{
+					new CodeInstruction(OpCodes.Ldarg_0),
+					new CodeInstruction(OpCodes.Ldarg_0),
+					new CodeInstruction(OpCodes.Ldfld, InstructionHandlers.convertFieldOperand(typeof(SurvivalDigScript), "mDigTarget")),
+				});
 				
 				FileLog.Log("Done patch "+MethodBase.GetCurrentMethod().DeclaringType);
 				//FileLog.Log("Codes are "+InstructionHandlers.toString(codes));

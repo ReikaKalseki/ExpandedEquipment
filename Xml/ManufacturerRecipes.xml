@@ -107,4 +107,33 @@
 		<CanCraftAnywhere>false</CanCraftAnywhere>
 		<ResearchCost>10</ResearchCost>
 	</CraftData>
+	<CraftData>
+		<Key>ReikaKalseki.SandBlaster</Key>
+		<Category>upgrades</Category>
+		<Tier>1</Tier>
+		<CraftedKey>ReikaKalseki.SandBlaster</CraftedKey>
+		<CraftedAmount>1</CraftedAmount>
+		<Costs>
+			<CraftCost>
+				<Key>IronGear</Key>
+				<Amount>100</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>ServoMotor</Key>
+				<Amount>50</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>LightweightMachineHousing</Key>
+				<Amount>10</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>SpiderBotPowerCore</Key>
+				<Amount>50</Amount>
+			</CraftCost>
+		</Costs>
+		<Description>Allows you to clear out large volumes of sand quickly. Consumes significant power.</Description>
+		<Hint>Suit item! You only need one! Does not stack!</Hint>
+		<CanCraftAnywhere>false</CanCraftAnywhere>
+		<ResearchCost>10</ResearchCost>
+	</CraftData>
 </ArrayOfCraftData>	

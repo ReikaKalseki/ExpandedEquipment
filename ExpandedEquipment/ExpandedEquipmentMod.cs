@@ -34,34 +34,130 @@ namespace ReikaKalseki.ExpandedEquipment
         runHarmony();      
                 
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.ItemMagnet"].ItemID);
+        UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.ItemMagnetV2"].ItemID);
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.NightVision"].ItemID);
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.SpringBoots"].ItemID);
+        UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.SandBlaster"].ItemID);
         
         return registrationData;
     }
     
     public static DroppedItemData doPlayerItemCollection(ItemManager mgr, long x, long y, long z, Vector3 off, float magRange, float magStrength, float range, int maxStack, Player p) {
-    	PlayerInventory inv = p.mInventory;
-    	int id = ItemEntry.GetIDFromKey("ReikaKalseki.ItemMagnet", true);
-    	int id2 = ItemEntry.GetIDFromKey("ReikaKalseki.ItemMagnetV2", true);
+    	
     	//FUtil.log("Has magnet "+id+" : "+inv.GetSuitAndInventoryItemCount(id));
     	float pwr = config.getFloat(EEConfig.ConfigEntries.MAGNET_COST);
     	float pt = pwr*Time.deltaTime;
     	float pwr2 = config.getFloat(EEConfig.ConfigEntries.MAGNET_V2_COST);
     	float pt2 = pwr2*Time.deltaTime;
-		if (SurvivalPowerPanel.mrSuitPower >= pt2 && id2 > 0 && inv.GetSuitAndInventoryItemCount(id2) > 0) { //TODO cache this for performance
-    		range *= 16;
-    		magRange *= 16;
+    	if (SurvivalPowerPanel.mrSuitPower >= pt2 && SuitUtil.isSuitItemPresent(p, "ReikaKalseki.ItemMagnetV2")) {
+    		range *= 12;
+    		magRange *= 12;
+    		//ARTHERPetSurvival.instance.SetARTHERReadoutText("Magnet v2 active", 5, false, true);
     		SurvivalPowerPanel.mrSuitPower -= pt2;
 		}
-		else if (SurvivalPowerPanel.mrSuitPower >= pt && id > 0 && inv.GetSuitAndInventoryItemCount(id) > 0) { //TODO cache this for performance
-    		range *= 6;
-    		magRange *= 6;
+		else if (SurvivalPowerPanel.mrSuitPower >= pt && SuitUtil.isSuitItemPresent(p, "ReikaKalseki.ItemMagnet")) {
+    		range *= 4;
+    		magRange *= 4;
+    		//ARTHERPetSurvival.instance.SetARTHERReadoutText("Magnet v1 active", 5, false, true);
     		SurvivalPowerPanel.mrSuitPower -= pt;
 		}
-    	DroppedItemData droppedItem = mgr.UpdateCollection(x, y, z, off, magRange, magStrength, range, maxStack);
+    	//DroppedItemData droppedItem = mgr.UpdateCollection(x, y, z, off, magRange, magStrength, range, maxStack);
+    	DroppedItemData droppedItem = replacedItemCollection(p, mgr, x, y, z, off, magRange, magStrength, range, maxStack);
     	return droppedItem;
     }
+    
+	public static DroppedItemData replacedItemCollection(Player p, ItemManager mgr, long x, long y, long z, Vector3 offset, float lrMagRange, float lrMagStrength, float lrCollectRange, int lnMaxStack)
+	{
+		lrMagRange *= lrMagRange;
+		lrCollectRange *= lrCollectRange;
+		long num2;
+		long num3;
+		long num4;
+		int r = 1;
+		if (SuitUtil.isSuitItemPresent(p, "ReikaKalseki.ItemMagnetV2"))
+			r = 6;
+		else if (SuitUtil.isSuitItemPresent(p, "ReikaKalseki.ItemMagnet"))
+			r = 2;
+		WorldHelper.GetSegmentCoords(x, y, z, out num2, out num3, out num4);
+		for (int i = -r; i <= r; i++)
+		{
+			for (int j = -r; j <= r; j++)
+			{
+				for (int k = -r; k <= r; k++)
+				{
+					long x2 = num2 + (long)(k * 16);
+					long y2 = num3 + (long)(i * 16);
+					long z2 = num4 + (long)(j * 16);
+					Segment segment = WorldScript.instance.GetSegment(x2, y2, z2);
+					//FUtil.log("Scanning segment for item: "+segment+" @ "+i+","+j+","+k);
+					if (segment != null && segment.mbInitialGenerationComplete && !segment.mbDestroyed)
+					{
+						if (segment.HasDroppedItems())
+						{
+							int count = segment.mDroppedItems.Count;
+							for (int l = 0; l < count; l++)
+							{
+								DroppedItemData droppedItemData = segment.mDroppedItems[l];
+								if (droppedItemData != null)
+								{
+									if (droppedItemData.mItem.mType != ItemType.ItemStack || (droppedItemData.mItem as ItemStack).mnAmount < lnMaxStack)
+									{
+										if (updateCollectionItem(mgr, droppedItemData, x, y, z, offset, lrMagRange, lrMagStrength, lrCollectRange))
+										{
+											if (droppedItemData.mWrapper != null)
+											{
+												if (droppedItemData.mWrapper.mbHasGameObject)
+												{
+													SurvivalPlayerScript.mItemCollectionPos = droppedItemData.mWrapper.mUnityPosition;
+												}
+												SpawnableObjectManagerScript.instance.ClearObject(droppedItemData.mWrapper);
+												droppedItemData.mWrapper = null;
+											}
+											mgr.RemoveItemFromSegment(segment, l);
+											segment.RequestDelayedSave();
+											return droppedItemData;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	private static bool updateCollectionItem(ItemManager mgr, DroppedItemData itemData, long x, long y, long z, Vector3 offset, float lrMagRange, float lrMagStrength, float lrCollectRange)
+	{
+		if (itemData.mbHandledExternally)
+		{
+			return false;
+		}
+		if (!itemData.mbOnGround)
+		{
+			return false;
+		}
+		if (itemData.mrAwakeTime < 1.5f)
+		{
+			return false;
+		}
+		Vector3 a = new Vector3((float)(x - itemData.mWorldX), (float)(y - itemData.mWorldY), (float)(z - itemData.mWorldZ)) + offset - itemData.mBlockInternalOffset;
+		float sqrMagnitude = a.sqrMagnitude;
+		if (sqrMagnitude < lrMagRange)
+		{
+			if (sqrMagnitude < lrCollectRange)
+			{
+				return true;
+			}
+			float num = sqrMagnitude / lrMagRange;
+			num = 1f - num;
+			num *= lrMagStrength;
+			a.Normalize();
+			itemData.mVelocity += num * a;
+		}
+		return false;
+	}
     
     private static float nightVisionBrightness = 0;
     
@@ -70,10 +166,9 @@ namespace ReikaKalseki.ExpandedEquipment
     	depth = -depth; // is otherwise < 0 in caves
     	bool flag = false;
     	if (depth > 24) {
-	    	int id = ItemEntry.GetIDFromKey("ReikaKalseki.NightVision", true);
 	    	float pwr = config.getFloat(EEConfig.ConfigEntries.NV_COST);
     		float pt = pwr*Time.deltaTime;
-			if (SurvivalPowerPanel.mrSuitPower >= pt && id > 0 && WorldScript.mLocalPlayer.mInventory.GetSuitAndInventoryItemCount(id) > 0) { //TODO cache this for performance
+			if (SurvivalPowerPanel.mrSuitPower >= pt && SuitUtil.isSuitItemPresent(WorldScript.mLocalPlayer, "ReikaKalseki.NightVision")) {
 	    		SurvivalPowerPanel.mrSuitPower -= pt;
 	    		flag = true;	    		
 			}
@@ -98,15 +193,15 @@ namespace ReikaKalseki.ExpandedEquipment
     
     public static float getFallDamage(float amt) {
     	if (amt > 0) {
-    		int id = ItemEntry.GetIDFromKey("ReikaKalseki.SpringBoots", true);
     		//player has 100 health
     		float pwr = Mathf.Lerp(amt/100F, config.getFloat(EEConfig.ConfigEntries.FALL_BOOT_COST_MIN), config.getFloat(EEConfig.ConfigEntries.FALL_BOOT_COST_MAX));
-    		if (SurvivalPowerPanel.mrSuitPower >= pwr && id > 0 && WorldScript.mLocalPlayer.mInventory.GetSuitAndInventoryItemCount(id) > 0) {
+    		if (SurvivalPowerPanel.mrSuitPower >= pwr && SuitUtil.isSuitItemPresent(WorldScript.mLocalPlayer, "ReikaKalseki.SpringBoots")) {
 	    		float orig = amt;
 	    		amt = (amt*0.8F)-10;
     			bool kill = orig >= SurvivalPowerPanel.CurrentHealth;
 	    		bool lethalSave = orig >= 100F && SurvivalPowerPanel.CurrentHealth >= 100;	
 	    		bool stillKill = amt >= SurvivalPowerPanel.CurrentHealth;
+	    		SurvivalPowerPanel.mrSuitPower -= pwr;
 	    		if (stillKill) {
 	    			ARTHERPetSurvival.instance.SetARTHERReadoutText("Spring Boots reduced the fall injury but it was still enough to kill you", 15, false, true);
 	    		}
@@ -126,6 +221,43 @@ namespace ReikaKalseki.ExpandedEquipment
     		}
     	}
     	return amt;
+    }
+    
+    public static void onDoNonOreDig(PlayerBuilder pb, Segment s, long x, long y, long z, SurvivalDigScript scr, ushort id) {
+    	pb.Dig(s, x, y, z);
+    	bool flag = false;
+    	if (id == eCubeTypes.Sand || id == eCubeTypes.SandFluid) {
+    		float pwr = config.getFloat(EEConfig.ConfigEntries.SAND_BLAST_COST);
+    		if (SurvivalPowerPanel.mrSuitPower >= pwr && SuitUtil.isSuitItemPresent(WorldScript.mLocalPlayer, "ReikaKalseki.SandBlaster")) {
+	    		SurvivalPowerPanel.mrSuitPower -= pwr;
+    			//ARTHERPetSurvival.instance.SetARTHERReadoutText("Dug sand @ "+x+", "+y+", "+z, 15, false, true);
+    			int r = config.getInt(EEConfig.ConfigEntries.SAND_BLAST_RADIUS);
+				for (int i = -r; i <= r; i++) {
+					for (int j = -r; j <= r; j++) {
+						for (int k = -r; k <= r; k++) {
+    						long dx = x+i;
+    						long dy = y+j;
+    						long dz = z+k;
+							Segment s2 = WorldScript.instance.GetSegment(dx, dy, dz);
+							if (s2.isSegmentValid() && !s2.mbIsEmpty) {
+								ushort at = s2.GetCube(dx, dy, dz);
+								if (at == eCubeTypes.Sand || at == eCubeTypes.SandFluid) {
+									flag = true;
+									WorldScript.instance.BuildFromEntity(s2, dx, dy, dz, eCubeTypes.Air);
+									DroppedItemData stack = ItemManager.DropNewCubeStack(eCubeTypes.SandFluid, 0, 1, dx, dy, dz, Vector3.zero);
+								}
+							}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	if (flag) {
+    		Vector3 position = WorldScript.instance.mPlayerFrustrum.GetCoordsToUnity(x, y, z) + WorldHelper.DefaultBlockOffset;
+			SurvivalParticleManager.instance.SandDropParticles.transform.position = position;
+			SurvivalParticleManager.instance.SandDropParticles.Emit(60);
+			AudioHUDManager.instance.BFLFire(position);
+    	}
     }
 
   }
