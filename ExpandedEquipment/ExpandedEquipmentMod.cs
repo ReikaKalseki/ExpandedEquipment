@@ -38,6 +38,7 @@ namespace ReikaKalseki.ExpandedEquipment
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.NightVision"].ItemID);
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.SpringBoots"].ItemID);
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.SandBlaster"].ItemID);
+        UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.HeatSuit"].ItemID);
         
         return registrationData;
     }
@@ -258,6 +259,31 @@ namespace ReikaKalseki.ExpandedEquipment
 			SurvivalParticleManager.instance.SandDropParticles.Emit(60);
 			AudioHUDManager.instance.BFLFire(position);
     	}
+    }
+    
+    public static float getSuitInsulation(float orig, SurvivalHazardPanel surv, float Tamb) {
+    	if (Tamb >= 100 && SuitUtil.isSuitItemPresent(WorldScript.mLocalPlayer, "ReikaKalseki.HeatSuit")) {
+    		return orig*4;
+    	}
+    	return orig;
+    }
+    
+    public static bool isInLavaForHeatCalc(bool orig) {
+    	return orig && !SuitUtil.isSuitItemPresent(WorldScript.mLocalPlayer, "ReikaKalseki.HeatSuit");
+    }
+    
+    public static bool checkHurtStayTrigger(Collider c, string tag, HurtPlayerOnStay hurt) {
+    	return c.CompareTag(tag) && !isHeatProtected(hurt);
+    }
+    
+    private static bool isHeatProtected(HurtPlayerOnStay hurt) {
+    	//FUtil.log("Attempt hurt from "+hurt+" in "+hurt.gameObject+" of "+hurt.getFullHierarchyPath()+" with C=["+string.Join(", ", hurt.gameObject.GetComponents<Component>().Select(c => c.GetType().Name).ToArray())+"]");
+    	return SuitUtil.isSuitItemPresent(WorldScript.mLocalPlayer, "ReikaKalseki.HeatSuit") && isHeatTypeHurt(hurt.gameObject.getRoot());
+    }
+    
+    public static bool isHeatTypeHurt(GameObject go) {
+    	string name = go.name;
+    	return name.Contains("JetTurbine") || name.Contains("PyrothermicGenerator");
     }
 
   }

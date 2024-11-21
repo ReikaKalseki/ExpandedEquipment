@@ -165,8 +165,72 @@ namespace ReikaKalseki.ExpandedEquipment {
 			return codes.AsEnumerable();
 		}
 	}
+
+	[HarmonyPatch(typeof(SurvivalHazardPanel))]
+	[HarmonyPatch("FixedUpdate")]
+	public static class ThermalBalanceHook {
+		
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			try {
+				FileLog.Log("Running patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				int idx = InstructionHandlers.getInstruction(codes, 0, 0, OpCodes.Ldfld, typeof(SurvivalHazardPanel), "mrSuitInsulation");
+				codes.InsertRange(idx+1, new List<CodeInstruction>{
+					new CodeInstruction(OpCodes.Ldarg_0),
+					new CodeInstruction(OpCodes.Ldarg_0),
+					new CodeInstruction(OpCodes.Ldfld, InstructionHandlers.convertFieldOperand(typeof(SurvivalHazardPanel), "mrExternalTemperature")),
+					InstructionHandlers.createMethodCall(typeof(ExpandedEquipmentMod), "getSuitInsulation", false, new Type[]{typeof(float), typeof(SurvivalHazardPanel), typeof(float)}),
+				});
+				FileLog.Log("Done patch A "+MethodBase.GetCurrentMethod().DeclaringType);
+				Lib.wrapMagmaCheck(codes, "mbHeadInMagma");
+				Lib.wrapMagmaCheck(codes, "mbFeetInMagma");
+				
+				FileLog.Log("Done patch B "+MethodBase.GetCurrentMethod().DeclaringType);
+				//FileLog.Log("Codes are "+InstructionHandlers.toString(codes));
+			}
+			catch (Exception e) {
+				FileLog.Log("Caught exception when running patch "+MethodBase.GetCurrentMethod().DeclaringType+"!");
+				FileLog.Log(e.Message);
+				FileLog.Log(e.StackTrace);
+				FileLog.Log(e.ToString());
+			}
+			return codes.AsEnumerable();
+		}
+	}
+
+	[HarmonyPatch(typeof(HurtPlayerOnStay))]
+	[HarmonyPatch("OnTriggerStay")]
+	public static class HurtTriggerHook {
+		
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			try {
+				FileLog.Log("Running patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				int idx = InstructionHandlers.getInstruction(codes, 0, 0, OpCodes.Callvirt, typeof(UnityEngine.Component), "CompareTag", true, new Type[]{typeof(string)});
+				//idx = InstructionHandlers.getFirstOpcode(codes, idx, OpCodes.Ldarg_0);
+				codes[idx] = InstructionHandlers.createMethodCall(typeof(ExpandedEquipmentMod), "checkHurtStayTrigger", false, new Type[]{typeof(Collider), typeof(string), typeof(HurtPlayerOnStay)});
+				codes.InsertRange(idx, new List<CodeInstruction>{
+					new CodeInstruction(OpCodes.Ldarg_0),
+				});
+				FileLog.Log("Done patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				//FileLog.Log("Codes are "+InstructionHandlers.toString(codes));
+			}
+			catch (Exception e) {
+				FileLog.Log("Caught exception when running patch "+MethodBase.GetCurrentMethod().DeclaringType+"!");
+				FileLog.Log(e.Message);
+				FileLog.Log(e.StackTrace);
+				FileLog.Log(e.ToString());
+			}
+			return codes.AsEnumerable();
+		}
+	}
 	
 	static class Lib {
+		
+		public static void wrapMagmaCheck(List<CodeInstruction> codes, string field) {
+			int idx = InstructionHandlers.getInstruction(codes, 0, 0, OpCodes.Ldfld, typeof(LocalPlayerScript), field);
+			codes.Insert(idx+1, InstructionHandlers.createMethodCall(typeof(ExpandedEquipmentMod), "isInLavaForHeatCalc", false, new Type[]{typeof(bool)}));
+		}
 		
 	}
 }

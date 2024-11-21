@@ -136,4 +136,33 @@
 		<CanCraftAnywhere>false</CanCraftAnywhere>
 		<ResearchCost>10</ResearchCost>
 	</CraftData>
+	<CraftData>
+		<Key>ReikaKalseki.HeatSuit</Key>
+		<Category>upgrades</Category>
+		<Tier>1</Tier>
+		<CraftedKey>ReikaKalseki.HeatSuit</CraftedKey>
+		<CraftedAmount>1</CraftedAmount>
+		<Costs>
+			<CraftCost>
+				<Key>GoldFoil</Key>
+				<Amount>50</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>PristineLightChitin</Key>
+				<Amount>25</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>HiemalMachineBlock</Key>
+				<Amount>20</Amount>
+			</CraftCost>
+			<CraftCost>
+				<Key>CompressedFreon</Key>
+				<Amount>200</Amount>
+			</CraftCost>
+		</Costs>
+		<Description>Protects you from external sources of extreme heat. Uses passive mechanisms and costs no power.</Description>
+		<Hint>Suit item! You only need one! Does not stack!</Hint>
+		<CanCraftAnywhere>false</CanCraftAnywhere>
+		<ResearchCost>5</ResearchCost>
+	</CraftData>
 </ArrayOfCraftData>	

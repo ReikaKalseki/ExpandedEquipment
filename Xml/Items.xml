@@ -88,4 +88,20 @@
       <Scan>IronOre</Scan>
     </ScanRequirements>
 	  </ItemEntry>
+	  <ItemEntry>
+		<Key>ReikaKalseki.HeatSuit</Key>
+		<Name>Thermal Protection Suit</Name>
+		<Plural>Thermal Protection Suits</Plural>
+		<Type>ItemSingle</Type>
+		<Object>UnknownItem</Object><!-- Obviously placeholder :D we display this when it's dropped -->
+		<Sprite>ReikaKalseki.HeatSuit</Sprite>
+		<!-- Atlas optional -->
+		<Category>SuitUpgrade</Category>
+		<ResearchRequirements>
+			<Research>suit upgrades</Research>
+		</ResearchRequirements>
+    <ScanRequirements>
+      <Scan>FluidMagma</Scan>
+    </ScanRequirements>
+	  </ItemEntry>
 </ArrayOfItemEntry>
