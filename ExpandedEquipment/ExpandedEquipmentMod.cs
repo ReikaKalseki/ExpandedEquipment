@@ -25,10 +25,7 @@ namespace ReikaKalseki.ExpandedEquipment
     	return config;
     }
 
-    public override ModRegistrationData Register()
-    {
-        ModRegistrationData registrationData = new ModRegistrationData();
-        
+	protected override void loadMod(ModRegistrationData registrationData) {        
         config.load();
         
         runHarmony();      
@@ -39,8 +36,6 @@ namespace ReikaKalseki.ExpandedEquipment
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.SpringBoots"].ItemID);
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.SandBlaster"].ItemID);
         UIManager.instance.mSuitPanel.ValidItems.Add(ItemEntry.mEntriesByKey["ReikaKalseki.HeatSuit"].ItemID);
-        
-        return registrationData;
     }
     
     public static DroppedItemData doPlayerItemCollection(ItemManager mgr, long x, long y, long z, Vector3 off, float magRange, float magStrength, float range, int maxStack, Player p) {
@@ -283,7 +278,7 @@ namespace ReikaKalseki.ExpandedEquipment
     
     public static bool isHeatTypeHurt(GameObject go) {
     	string name = go.name;
-    	return name.Contains("JetTurbine") || name.Contains("PyrothermicGenerator");
+    	return name.Contains("JetTurbine") || name.Contains("PyrothermicGenerator") || name.Contains("Conduit") || name.Contains("PowerTransmitter");
     }
 
   }
