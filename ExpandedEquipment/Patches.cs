@@ -224,6 +224,28 @@ namespace ReikaKalseki.ExpandedEquipment {
 			return codes.AsEnumerable();
 		}
 	}
+/*
+	[HarmonyPatch(typeof(LaserPowerTransmitter))]
+	[HarmonyPatch("ToggleFullPowerUpgrade")]
+	public static class LPTGODebugHook {
+		
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			try {
+				FileLog.Log("Running patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				InstructionHandlers.patchInitialHook(codes, new CodeInstruction(OpCodes.Ldarg_0), new CodeInstruction(OpCodes.Ldarg_0), new CodeInstruction(OpCodes.Ldfld, InstructionHandlers.convertFieldOperand(typeof(LaserPowerTransmitter), "FullPowerUpgrade")), InstructionHandlers.createMethodCall(typeof(ExpandedEquipmentMod), "debugLPT", false, new Type[]{typeof(LaserPowerTransmitter), typeof(GameObject)}));
+				FileLog.Log("Done patch "+MethodBase.GetCurrentMethod().DeclaringType);
+				//FileLog.Log("Codes are "+InstructionHandlers.toString(codes));
+			}
+			catch (Exception e) {
+				FileLog.Log("Caught exception when running patch "+MethodBase.GetCurrentMethod().DeclaringType+"!");
+				FileLog.Log(e.Message);
+				FileLog.Log(e.StackTrace);
+				FileLog.Log(e.ToString());
+			}
+			return codes.AsEnumerable();
+		}
+	}*/
 	
 	static class Lib {
 		

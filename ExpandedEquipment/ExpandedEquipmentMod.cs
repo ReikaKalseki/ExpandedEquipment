@@ -272,14 +272,19 @@ namespace ReikaKalseki.ExpandedEquipment
     }
     
     private static bool isHeatProtected(HurtPlayerOnStay hurt) {
-    	//FUtil.log("Attempt hurt from "+hurt+" in "+hurt.gameObject+" of "+hurt.getFullHierarchyPath()+" with C=["+string.Join(", ", hurt.gameObject.GetComponents<Component>().Select(c => c.GetType().Name).ToArray())+"]");
+    	FUtil.log("Attempt hurt from "+hurt+" in "+hurt.gameObject+" of "+hurt.getFullHierarchyPath()+" with C=["+string.Join(", ", hurt.gameObject.GetComponents<Component>().Select(c => c.GetType().Name).ToArray())+"]");
     	return SuitUtil.isSuitItemPresent(WorldScript.mLocalPlayer, "ReikaKalseki.HeatSuit") && isHeatTypeHurt(hurt.gameObject.getRoot());
     }
     
     public static bool isHeatTypeHurt(GameObject go) {
     	string name = go.name;
-    	return name.Contains("JetTurbine") || name.Contains("PyrothermicGenerator") || name.Contains("Conduit") || name.Contains("PowerTransmitter");
+    	return name.Contains("JetTurbine") || name.Contains("PyrothermicGenerator") || name.Contains("Conduit") || name.Contains("Laser Upgrade");
     }
+    /*
+    public static void debugLPT(LaserPowerTransmitter lpt, GameObject beam) {
+    	FUtil.log("LPT @ "+lpt.machineToString()+" beam object:");
+    	FUtil.dumpObjectData(beam);
+    }*/
 
   }
 }
