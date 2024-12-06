@@ -278,7 +278,7 @@ namespace ReikaKalseki.ExpandedEquipment
     
     public static bool isHeatTypeHurt(GameObject go) {
     	string name = go.name;
-    	return name.Contains("JetTurbine") || name.Contains("PyrothermicGenerator") || name.Contains("Conduit") || name.Contains("Laser Upgrade");
+    	return name.Contains("JetTurbine") || name.Contains("PyrothermicGenerator") || name.Contains("Conduit") || name.Contains("Laser Upgrade") || name.Contains("LaserTransferHolder");
     }
     /*
     public static void debugLPT(LaserPowerTransmitter lpt, GameObject beam) {
